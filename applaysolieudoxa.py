@@ -151,4 +151,5 @@ with tab1:
         md_xpath_res = st.text_input("XPath Ô Kết Quả (Status)", value="//table[@id='gridData']//tr[1]//td[5]", key="md3")
 
     if st.button("🚀 Chạy Tra Cứu Modem"):
-        if not st.session_state.driver or df_
+        if not st.session_state.driver or df_input is None:
+
