@@ -150,6 +150,10 @@ with tab1:
         md_xpath_btn = st.text_input("XPath Nút Tìm", value="//button[contains(text(),'Tìm kiếm')]", key="md2")
         md_xpath_res = st.text_input("XPath Ô Kết Quả (Status)", value="//table[@id='gridData']//tr[1]//td[5]", key="md3")
 
-    if st.button("🚀 Chạy Tra Cứu Modem"):
+if st.button("🚀 Chạy Tra Cứu Modem"): # Hoặc DCU tùy vị trí bạn đang sửa
+        # SỬA DÒNG DƯỚI NÀY:
         if not st.session_state.driver or df_input is None:
+            st.error("Vui lòng mở trình duyệt và nạp file trước!")
+        else:
+            # ... code xử lý bên trong ...
 
