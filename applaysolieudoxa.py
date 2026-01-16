@@ -150,10 +150,35 @@ with tab1:
         md_xpath_btn = st.text_input("XPath Nút Tìm", value="//button[contains(text(),'Tìm kiếm')]", key="md2")
         md_xpath_res = st.text_input("XPath Ô Kết Quả (Status)", value="//table[@id='gridData']//tr[1]//td[5]", key="md3")
 
-if st.button("🚀 Chạy Tra Cứu Modem"): # Hoặc DCU tùy vị trí bạn đang sửa
-        # SỬA DÒNG DƯỚI NÀY:
+if st.button("🚀 Chạy Tra Cứu Modem"):
+        # Kiểm tra điều kiện
         if not st.session_state.driver or df_input is None:
             st.error("Vui lòng mở trình duyệt và nạp file trước!")
         else:
-            # ... code xử lý bên trong ...
+            # === PHẦN NÀY PHẢI THỤT VÀO TRONG SO VỚI 'ELSE' ===
+            config = {
+                'ID_INPUT': md_id_input,
+                'XPATH_BTN': md_xpath_btn,
+                'XPATH_RES_1': md_xpath_res,
+                'XPATH_RES_2': None
+            }
+            
+            results = []
+            bar = st.progress(0)
+            status_text = st.empty()
+            
+            for i, row in df_input.iterrows():
+                ma = row['Code']
+                # Update thanh tiến trình
+                bar.progress(int((i / len(df_input)) * 100))
+                status_text.text(f"Đang xử lý: {ma} ({i+1}/{len(df_input)})")
+                
+                # Gọi hàm
+                res = tra_cuu_chung(st.session_state.driver, ma, config)
+                results.append(res)
+            
+            bar.progress(100)
+            status_text.text("Hoàn tất!")
+            st.session_state.df_modem = pd.DataFrame(results)
+
 
