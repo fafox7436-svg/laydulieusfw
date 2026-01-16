@@ -128,15 +128,23 @@ with st.sidebar:
 
     st.divider()
     st.header("2. Điều khiển Browser")
-    if st.button("Mở Trình Duyệt & Đăng Nhập", type="primary"):
+if st.button("Mở Trình Duyệt & Đăng Nhập", type="primary"):
         if st.session_state.driver is None:
             driver = init_driver()
-            st.session_state.driver = driver
-            driver.get("https://sfw.evnspc.vn/")
-            st.info("Đã mở Chrome! Hãy đăng nhập thủ công rồi quay lại đây.")
+            
+            # Kiểm tra xem driver có mở thành công không
+            if driver is not None:
+                st.session_state.driver = driver
+                try:
+                    driver.get("https://sfw.evnspc.vn/")
+                    st.info("Đã mở Chrome! Hãy đăng nhập thủ công rồi quay lại đây.")
+                except Exception as e:
+                    st.error(f"Không thể truy cập web. Lỗi: {e}")
+            else:
+                st.error("Không thể khởi động trình duyệt Chrome. Hãy đảm bảo bạn đang chạy trên máy tính cá nhân (Localhost), không phải trên Cloud.")
         else:
             st.warning("Trình duyệt đã mở rồi.")
-
+            
 # ================= TAB CHỨC NĂNG =================
 tab1, tab2 = st.tabs(["📡 TRA CỨU MODEM", "🔋 TRA CỨU DCU & TẢI FILE"])
 
@@ -180,5 +188,6 @@ if st.button("🚀 Chạy Tra Cứu Modem"):
             bar.progress(100)
             status_text.text("Hoàn tất!")
             st.session_state.df_modem = pd.DataFrame(results)
+
 
 
